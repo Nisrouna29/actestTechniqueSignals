@@ -1,14 +1,14 @@
-import { Component, effect, OnInit, inject } from '@angular/core';
+import { Component, effect, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { BoxesComponent } from './boxes/boxes.component';
 import { SelectorComponent } from './selector/selector.component';
-import { SelectorOptionsStore } from './services/selector-options.service';
 import { BoxStore } from './services/box-store.service';
 
 @Component({
   selector: 'app-root',
   imports: [BoxesComponent, SelectorComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   boxStore = inject(BoxStore);
