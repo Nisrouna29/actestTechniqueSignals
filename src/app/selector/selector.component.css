@@ -1,0 +1,85 @@
+:host {
+  margin-top: 50px;
+  display: block;
+}
+
+mat-card {
+  width: fit-content !important;
+}
+
+.card-content {
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: fit-content !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 50px;
+}
+.front,
+.back,
+.other {
+  height: max-content;
+  width: fit-content;
+  box-sizing: border-box;
+}
+.front,
+.other {
+  max-width: 215px;
+}
+
+.back {
+  max-width: 545px;
+}
+
+.selectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 15px;
+  justify-content: center;
+}
+.title {
+  text-align: center;
+  color: rgb(0, 229, 255);
+  width: 100%;
+}
+/* Container for the dots */
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 30px;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgb(233, 30, 99);
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+

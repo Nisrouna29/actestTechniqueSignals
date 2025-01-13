@@ -1,0 +1,37 @@
+@defer (when !isloading()) {
+<mat-card appearance="raised">
+  <mat-card-content class="card-content">
+    <div class="front">
+      <div class="title">front salto's:</div>
+      <div class="selectors">
+        @for (item of frontOptions(); track item.id) {
+        <app-selector-option [option]="item"></app-selector-option>
+        }
+      </div>
+    </div>
+    <div class="back">
+      <div class="title">back salto's:</div>
+      <div class="selectors">
+        @for (item of backOptions(); track item.id) {
+        <app-selector-option [option]="item"></app-selector-option>
+        }
+      </div>
+    </div>
+    <div class="other">
+      <div class="title">other:</div>
+      <div class="selectors">
+        @for (item of othersOptions(); track item.id) {
+        <app-selector-option [option]="item"></app-selector-option>
+        }
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+}@placeholder {
+<div class="loading-dots">
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+</div>
+}
