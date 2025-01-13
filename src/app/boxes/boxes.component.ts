@@ -18,7 +18,7 @@ import { Box } from '../models/box';
 export class BoxesComponent {
   boxStore = inject(BoxStore);
   total = computed(() => {
-    const boxes = this.boxStore.boxes();
+    const boxes = this.boxStore.boxesMap();
     return this.calculateTotal(boxes);
   });
 

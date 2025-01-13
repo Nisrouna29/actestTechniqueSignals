@@ -14,7 +14,7 @@ export class BoxComponent {
   @Input() public index: number = 0;
 
   box = computed(() => {
-    const boxes = this.boxStore.boxes();
+    const boxes = this.boxStore.boxesMap();
     return boxes.get(this.index) ?? null;
   });
 

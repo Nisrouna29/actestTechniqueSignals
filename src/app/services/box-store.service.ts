@@ -11,8 +11,7 @@ export class BoxStore extends signalStore(
 
   withState<BoxesState>({ boxesMap: new Map() }),
   withState<BoxSelectionState>({ selectedBox: null }),
-  withComputed(({ boxesMap, selectedBox }) => ({
-    boxes: computed(() => boxesMap()),
+  withComputed(({ selectedBox }) => ({
     selectedBoxId: computed(() => selectedBox() ? selectedBox()?.id : null)
   })),
 
@@ -60,47 +59,59 @@ export class BoxStore extends signalStore(
 
     return {
       async loadBoxes() {
-        const response = await firstValueFrom(http.get<Record<string, IBox>>(`${apiUrl}/boxes.json`));
-        const processedBoxes = processBoxesResponse(response ?? null);
-        const boxMap = createBoxMap(processedBoxes);
-        patchState(store, {
-          boxesMap: boxMap,
-        });
+        try {
+          const response = await firstValueFrom(http.get<Record<string, IBox>>(`${apiUrl}/boxes.json`));
+          const processedBoxes = processBoxesResponse(response ?? null);
+          const boxMap = createBoxMap(processedBoxes);
+          patchState(store, {
+            boxesMap: boxMap,
+          });
+        } catch (error) {
+          console.error("Error while loading boxes", error)
+        }
       },
 
       async deleteAllBoxes() {
-        await firstValueFrom(http.delete(`${apiUrl}/boxes.json`));
-        const emptyMap = initMap();
-        const currentBox = store.selectedBox();
-        const newSelectedBox = currentBox ? new Box(currentBox?.id, null, null, null) : null;
-        patchState(store, {
-          boxesMap: emptyMap,
-          selectedBox: newSelectedBox,
-        });
+        try {
+          await firstValueFrom(http.delete(`${apiUrl}/boxes.json`));
+          const emptyMap = initMap();
+          const currentBox = store.selectedBox();
+          const newSelectedBox = currentBox ? new Box(currentBox?.id, null, null, null) : null;
+          patchState(store, {
+            boxesMap: emptyMap,
+            selectedBox: newSelectedBox,
+          });
+        } catch (error) {
+          console.error("Error while deleting boxes", error)
+        }
       },
 
       async patchBox(option: ISelectorOption) {
-        const currentBox = store.selectedBox();
-        if (!currentBox?.id) return;
-        const updatedBox = new Box(currentBox.id, option.id, option.label, option.value);
-        await firstValueFrom(http.patch(`${apiUrl}/boxes/${currentBox.id}.json`, updatedBox));
-        const newboxesMap = new Map(store.boxesMap());
-        newboxesMap.set(currentBox.id, updatedBox);
-        let nextBox: Box | null = null;
-        if (currentBox.id < 10) {
-          nextBox = newboxesMap.get(currentBox.id + 1) ?? null;
-        }
-        if (nextBox) {
-          patchState(store, {
-            boxesMap: newboxesMap,
-            selectedBox: nextBox,
-          });
+        try {
+          const currentBox = store.selectedBox();
+          if (!currentBox?.id) return;
+          const updatedBox = new Box(currentBox.id, option.id, option.label, option.value);
+          await firstValueFrom(http.patch(`${apiUrl}/boxes/${currentBox.id}.json`, updatedBox));
+          const newboxesMap = new Map(store.boxesMap());
+          newboxesMap.set(currentBox.id, updatedBox);
+          let nextBox: Box | null = null;
+          if (currentBox.id < 10) {
+            nextBox = newboxesMap.get(currentBox.id + 1) ?? null;
+          }
+          if (nextBox) {
+            patchState(store, {
+              boxesMap: newboxesMap,
+              selectedBox: nextBox,
+            });
 
-        } else {
-          patchState(store, {
-            boxesMap: newboxesMap,
-            selectedBox: updatedBox,
-          });
+          } else {
+            patchState(store, {
+              boxesMap: newboxesMap,
+              selectedBox: updatedBox,
+            });
+          }
+        } catch (error) {
+          console.error('Error while updating box', error)
         }
       },
 
@@ -123,7 +134,7 @@ export class BoxStore extends signalStore(
       store.loadBoxes();
       effect(() => {
         console.debug('BoxStore state updated:', {
-          boxes: store.boxesMap(),
+          boxesMap: store.boxesMap(),
           selectedBoxId: store.selectedBoxId(),
         });
       });
