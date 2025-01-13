@@ -27,9 +27,9 @@ export class BoxStore extends signalStore(
           if (!box) return null;
           return new Box(
             box.id,
-            box.idSelectorOption ?? null,
-            box.label ?? null,
-            box.value ?? null
+            box.idSelectorOption,
+            box.label,
+            box.value
           );
         })
         .filter((box): box is Box => box !== null);

@@ -44,9 +44,9 @@ export class SelectorOptionsStore extends signalStore(
             if (!option) return null;
             return {
               id: option.id,
-              label: option.label ?? null,
-              value: option.value ?? null,
-              type: option.type ?? null,
+              label: option.label,
+              value: option.value,
+              type: option.type,
             };
           }).filter((option): option is ISelectorOption => option !== null);
 
