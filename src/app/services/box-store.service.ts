@@ -36,10 +36,7 @@ export class BoxStore extends signalStore(
     };
 
     const createBoxMap = (boxes: Box[]): Map<number, Box> => {
-      const map = new Map<number, Box>();
-      for (let i = 1; i <= 10; i++) {
-        map.set(i, new Box(i, null, null, null));
-      }
+      const map = initMap();
       boxes.forEach((box) => {
         if (box?.id && box.id >= 1 && box.id <= 10) {
           map.set(box.id, box);
